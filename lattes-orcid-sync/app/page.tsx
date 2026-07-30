@@ -1,5 +1,21 @@
 import Link from "next/link";
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Lattes → ORCID",
+  url: "https://lattes-orcid-sync.vercel.app",
+  description:
+    "Suba o XML do seu Currículo Lattes e receba um currículo formatado para editais e um arquivo pronto para importar no ORCID.",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "BRL",
+  },
+};
+
 const FEATURES = [
   {
     title: "Upload do XML",
@@ -49,6 +65,10 @@ const FAQS = [
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 font-sans dark:bg-black">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+      />
       <main className="flex flex-1 flex-col items-center">
         <section className="flex w-full max-w-3xl flex-col items-center gap-6 px-6 py-24 text-center sm:px-16">
           <span className="rounded-full border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
