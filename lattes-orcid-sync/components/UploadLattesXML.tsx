@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { CurriculoLattes } from "@/lib/lattes-parser";
 import { isValidOrcidId } from "@/lib/lattes-format";
 import { compararProducao, type ItemComparado, type ResultadoComparacao } from "@/lib/orcid-lattes-compare";
+import PixModal from "@/components/PixModal";
 
 export default function UploadLattesXML() {
   const [curriculo, setCurriculo] = useState<CurriculoLattes | null>(null);
@@ -202,6 +203,7 @@ const EXPORT_LABELS: Record<ExportFormat, { idle: string; loading: string }> = {
 function ExportButtons({ curriculo, orcidId }: { curriculo: CurriculoLattes; orcidId?: string }) {
   const [exporting, setExporting] = useState<ExportFormat | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [pixModalOpen, setPixModalOpen] = useState(false);
 
   async function handleExport(format: ExportFormat) {
     setExporting(format);
@@ -231,6 +233,10 @@ function ExportButtons({ curriculo, orcidId }: { curriculo: CurriculoLattes; orc
       link.click();
       link.remove();
       URL.revokeObjectURL(url);
+
+      if (format === "pdf" || format === "bib") {
+        setPixModalOpen(true);
+      }
     } catch (err) {
       setExportError(err instanceof Error ? err.message : `Falha ao gerar o arquivo (${format}).`);
     } finally {
@@ -258,6 +264,7 @@ function ExportButtons({ curriculo, orcidId }: { curriculo: CurriculoLattes; orc
           {exportError}
         </p>
       )}
+      <PixModal open={pixModalOpen} onClose={() => setPixModalOpen(false)} />
     </div>
   );
 }
