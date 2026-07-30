@@ -38,3 +38,30 @@ end;
 $$;
 
 grant execute on function public.consume_usage(text, integer) to anon;
+
+-- Tabela de feedback (erros reportados e sugestões). Mesma lógica de acesso:
+-- RLS ligado, sem políticas permissivas, só acessível via submit_feedback.
+
+create table if not exists feedback (
+  id uuid primary key default gen_random_uuid(),
+  type text not null check (type in ('erro', 'sugestao')),
+  message text not null,
+  email text,
+  created_at timestamptz not null default now()
+);
+
+alter table feedback enable row level security;
+
+create or replace function public.submit_feedback(p_type text, p_message text, p_email text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into feedback (type, message, email)
+  values (p_type, p_message, nullif(trim(p_email), ''));
+end;
+$$;
+
+grant execute on function public.submit_feedback(text, text, text) to anon;
