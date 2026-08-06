@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+    google: "13Qo8HZGmGiCgJ5rNxODBtWdUCKQFaCF28LU7fjp7Vk",
   metadataBase: new URL("https://lattes-orcid-sync.vercel.app"),
   title: "Lattes → ORCID | Currículo formatado sem digitar tudo de novo",
   description:
