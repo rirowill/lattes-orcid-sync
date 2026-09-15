@@ -15,18 +15,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_TITLE = "Lattes2ORCID: Currículo Resumido + Integração com ORCID";
+const SITE_DESCRIPTION =
+  "Gere um currículo Lattes resumido em PDF e converta suas publicações para .bib, prontas para o ORCID. Vincule Lattes e ORCID sem digitar tudo de novo. Grátis e seguro.";
+
 export const metadata: Metadata = {
    verification: {
     google: "13Qo8HZGmGiCgJ5rNxODBtWdUCKQFaCF28LU7fjp7Vk",
   },
   metadataBase: new URL("https://lattes-orcid-sync.vercel.app"),
-  title: "Lattes → ORCID | Currículo formatado sem digitar tudo de novo",
-  description:
-    "Suba o XML do seu Currículo Lattes e receba um currículo formatado para editais e um arquivo pronto para importar no ORCID.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Lattes → ORCID | Currículo formatado sem digitar tudo de novo",
-    description:
-      "Suba o XML do seu Currículo Lattes e receba um currículo formatado para editais e um arquivo pronto para importar no ORCID.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: [{ url: "/og-image.png", width: 1200, height: 655 }],
   },
 };

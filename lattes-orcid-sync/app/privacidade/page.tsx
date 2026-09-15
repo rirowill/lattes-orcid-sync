@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade | Lattes → ORCID",
+  title: "Política de Privacidade | Lattes2ORCID",
   description:
-    "Como o Lattes → ORCID coleta, usa e armazena seus dados.",
+    "Como o Lattes2ORCID coleta, usa e armazena seus dados.",
 };
 
 const SECTIONS = [

@@ -1,9 +1,10 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 const STRUCTURED_DATA = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "Lattes → ORCID",
+  name: "Lattes2ORCID",
   url: "https://lattes-orcid-sync.vercel.app",
   description:
     "Suba o XML do seu Currículo Lattes e receba um currículo formatado para editais e um arquivo pronto para importar no ORCID.",
@@ -49,7 +50,84 @@ const STEPS = [
   },
 ];
 
+const LINK_STEPS = [
+  {
+    icon: "pdf",
+    title: "Currículo Lattes resumido em PDF",
+    description:
+      "Gere, a partir do mesmo XML do Lattes, um currículo resumido e já formatado para o edital — sem editar nada manualmente.",
+  },
+  {
+    icon: "bib",
+    title: "Publicações convertidas para .bib",
+    description:
+      "Toda a sua produção bibliográfica sai pronta em formato .bib, para importar no ORCID de uma vez, sem cadastrar publicação por publicação.",
+  },
+  {
+    icon: "link",
+    title: "ORCID vinculado ao Lattes",
+    description:
+      "Insira seu ORCID iD em Dados Gerais > Identificação > Outras Bases Bibliográficas no Lattes — o vínculo fica salvo permanentemente, e você usa os arquivos gerados aqui sempre que atualizar sua produção.",
+  },
+];
+
+const LINK_STEP_ICONS: Record<string, ReactNode> = {
+  pdf: (
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+      <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M14 3v5h5" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M9 14h6M9 17h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+  bib: (
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+      <path d="M8 4 4 8l4 4M16 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 20h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+  link: (
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
+      <path d="M10 14a4 4 0 0 0 5.66 0l2.34-2.34a4 4 0 1 0-5.66-5.66L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 10a4 4 0 0 0-5.66 0L6 12.34a4 4 0 1 0 5.66 5.66L13 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+};
+
+const BENEFITS = [
+  {
+    title: "Economia de tempo",
+    description: "O que levaria horas digitando publicação por publicação no ORCID sai pronto em minutos.",
+  },
+  {
+    title: "Segurança de dados",
+    description: "Seu XML é processado só na hora de gerar os arquivos e descartado logo em seguida — nunca fica salvo.",
+  },
+  {
+    title: "Compatibilidade internacional",
+    description: "O ORCID é o identificador de pesquisador reconhecido internacionalmente — o arquivo .bib gerado segue o padrão aceito por ele.",
+  },
+  {
+    title: "Gratuito para sempre",
+    description: "Sem plano pago, sem cartão de crédito: suba o XML e baixe seus arquivos.",
+  },
+];
+
 const FAQS = [
+  {
+    question: "Como integrar currículo Lattes e ORCID?",
+    answer:
+      "O CNPq não oferece sincronização automática entre as duas plataformas, então 'integrar' Lattes e ORCID envolve dois passos: (1) inserir seu ORCID iD no próprio Currículo Lattes, em Dados Gerais > Identificação > Outras Bases Bibliográficas, para associar as duas identidades; e (2) levar sua produção bibliográfica de um lado para o outro sem redigitar tudo, um por um. É nesse segundo passo que esta ferramenta ajuda: você exporta o XML do Lattes e recebe um arquivo .bib pronto para importar direto no ORCID.",
+  },
+  {
+    question: "Como vincular Lattes e ORCID permanentemente?",
+    answer:
+      "O vínculo é feito uma vez e fica salvo no seu Currículo Lattes: acesse Dados Gerais > Identificação > Outras Bases Bibliográficas, informe o número do seu ORCID, clique em 'Validar ID', confirme e publique o currículo — o link passa a aparecer automaticamente na página pública do seu Lattes. Isso associa as duas identidades permanentemente, mas não sincroniza dados: cada nova publicação ainda precisa ser adicionada nas duas plataformas (ou convertida com uma ferramenta como esta, para não digitar tudo de novo no ORCID).",
+  },
+  {
+    question: "Posso gerar um currículo Lattes resumido?",
+    answer:
+      "Sim. A emissão padrão da Plataforma Lattes gera o currículo no formato completo da plataforma. Se você precisa de uma versão mais enxuta, já formatada para um edital específico, sem editar nada manualmente, suba o mesmo XML que exportou do Lattes aqui e devolvemos um PDF pronto para anexar.",
+  },
   {
     question: "Meus dados ficam seguros?",
     answer:
@@ -62,12 +140,29 @@ const FAQS = [
   },
 ];
 
+const FAQ_STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 font-sans dark:bg-black">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_STRUCTURED_DATA) }}
       />
       <main className="flex flex-1 flex-col items-center">
         <section className="flex w-full max-w-3xl flex-col items-center gap-6 px-6 py-24 text-center sm:px-16">
@@ -128,6 +223,42 @@ export default function Home() {
                   <span className="text-sm font-medium text-zinc-400 dark:text-zinc-600">{step.number}</span>
                   <h3 className="text-base font-semibold text-black dark:text-zinc-50">{step.title}</h3>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full border-t border-zinc-200 dark:border-zinc-800">
+          <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-20 sm:px-16">
+            <h2 className="text-2xl font-semibold text-black dark:text-zinc-50">
+              Como vincular Lattes e ORCID em 3 passos
+            </h2>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+              {LINK_STEPS.map((step) => (
+                <div
+                  key={step.title}
+                  className="flex flex-col gap-3 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                    {LINK_STEP_ICONS[step.icon]}
+                  </div>
+                  <h3 className="text-base font-semibold text-black dark:text-zinc-50">{step.title}</h3>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full border-t border-zinc-200 dark:border-zinc-800">
+          <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-20 sm:px-16">
+            <h2 className="text-2xl font-semibold text-black dark:text-zinc-50">Por que usar o Lattes2ORCID?</h2>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {BENEFITS.map((benefit) => (
+                <div key={benefit.title} className="flex flex-col gap-2">
+                  <h3 className="text-base font-semibold text-black dark:text-zinc-50">{benefit.title}</h3>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">{benefit.description}</p>
                 </div>
               ))}
             </div>
